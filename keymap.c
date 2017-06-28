@@ -20,45 +20,43 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |   1  |   2  |   3  |   4  |   5  |      |           |      |   6  |   7  |   8  |   9  |   0  |   -    |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |   Q  |   W  |   E  |   R  |   T  |      |           |  L1  |   Y  |   U  |   I  |   O  |   P  |   \    |
+ * | LAlt   |   Q  |   W  |   E  |   R  |   T  |      |           |      |   Y  |   U  |   I  |   O  |   P  |   \    |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |; / L2|' / Cmd |
- * |--------+------+------+------+------+------| Cmd/ |           | Meh  |------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  | Win  |           |      |   N  |   M  |   ,  |   .  |//Ctrl| RShift |
+ * | LCtrl  |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |; / L2|' / Cmd |
+ * |--------+------+------+------+------+------| Cmd/ |           | Cmd/ |------+------+------+------+------+--------|
+ * | LShift |   Z  |   X  |   C  |   V  |   B  | Win  |           | Win  |   N  |   M  |   ,  |   .  |//Ctrl| RShift |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |      |  '"  |  Tab | Left | Right|                                       |  Up  | Down |   [  |   ]  | ~L1  |
+ *   |      |  '"  |  Tab | Left | Right|                                       |  Up  | Down |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
- *                                        ,-------------.       ,-------------.
- *                                        |      |      |       | Alt  |Ctrl/Esc|
+ *                                        ,-------------.       ,---------------.
+ *                                        |      |      |       |      |        |
  *                                 ,------|------|------|       |------+--------+------.
- *                                 |      |      |      |       | PgUp |        |      |
- *                                 | Space|Backsp|------|       |------|  Tab   |Enter |
- *                                 |      |ace   |      |       | PgDn |        |      |
+ *                                 |      |      |      |       |      |        |      |
+ *                                 | Space|Backsp|------|       |------|        |      |
+ *                                 |      |ace   |      |       |      |        |      |
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
 // Otherwise, it needs KC_*
 [BASE] = KEYMAP(  // layer 0 : default
-        // left hand
-        //             |             |       |       |       |       |             |
+        // Left Hand   |             |       |       |       |       |             |
         KC_TRNS,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_TRNS,
         KC_LALT,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_TRNS,
         KC_LCTL,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LSFT,        KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,
         KC_TRNS,        KC_QUOT,      KC_TAB,         KC_LEFT,KC_RGHT,
-	/* Island begins */                           KC_TRNS,KC_TRNS,
+	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
                                                               KC_TRNS,
                                                KC_SPC,KC_BSPC,KC_TRNS,
-        // right hand
+        // Right Hand    |       |      |       |       |                 |
              KC_TRNS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_MINS,
-             TG(SYMB),    KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_BSLS,
+             KC_TRNS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_BSLS,
                           KC_H,   KC_J,  KC_K,   KC_L,   LT(MDIA, KC_SCLN),GUI_T(KC_QUOT),
-             MEH_T(KC_NO),KC_N,   KC_M,  KC_COMM,KC_DOT, CTL_T(KC_SLSH),   KC_RSFT,
-                                  KC_UP, KC_DOWN,KC_LBRC,KC_RBRC,          KC_FN1,
-	/* ---- Island Separator ------------------------------------------------------- */
-             KC_LALT,        CTL_T(KC_ESC),
-             KC_PGUP,
-             KC_PGDN,KC_TAB, KC_ENT
+             KC_LGUI,     KC_N,   KC_M,  KC_COMM,KC_DOT, CTL_T(KC_SLSH),   KC_RSFT,
+                                  KC_UP, KC_DOWN,KC_TRNS,KC_TRNS,          KC_TRNS,
+	     KC_TRNS,            KC_TRNS, //  <- Right Hand Island START
+             KC_TRNS,
+             KC_TRNS,KC_TRNS,KC_TRNS
     ),
 /* Keymap 1: Symbol Layer
  *
