@@ -18,21 +18,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |        |   1  |   2  |   3  |   4  |   5  |      |           |      |   6  |   7  |   8  |   9  |   0  |   -    |
+ * |        |   1  |   2  |   3  |   4  |   5  |  -   |           |  +   |   6  |   7  |   8  |   9  |   0  |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * | LAlt   |   Q  |   W  |   E  |   R  |   T  |      |           |      |   Y  |   U  |   I  |   O  |   P  |   \    |
+ * | LAlt   |   Q  |   W  |   E  |   R  |   T  |      |           |      |   Y  |   U  |   I  |   O  |   P  | RAlt   |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * | LCtrl  |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |; / L2|' / Cmd |
+ * | LCtrl  |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |   ;  | RCtrl  |
  * |--------+------+------+------+------+------| Cmd/ |           | Cmd/ |------+------+------+------+------+--------|
- * | LShift |   Z  |   X  |   C  |   V  |   B  | Win  |           | Win  |   N  |   M  |   ,  |   .  |//Ctrl| RShift |
+ * | LShift |   Z  |   X  |   C  |   V  |   B  | Win  |           | Win  |   N  |   M  |   ,  |   .  |   /  | RShift |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |      |  '"  |  Tab | Left | Right|                                       |  Up  | Down |      |      |      |
+ *   |      |  '"  |  Tab | Left | Right|                                       |  Up  | Down |   \  |   `  |      |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,---------------.
  *                                        |      |      |       |      |        |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      |      |       |      |        |      |
- *                                 | Space|Backsp|------|       |------|        |      |
+ *                                 | Space|Backsp|------|       |------|  Del   |Enter |
  *                                 |      |ace   |      |       |      |        |      |
  *                                 `--------------------'       `----------------------'
  */
@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Otherwise, it needs KC_*
 [BASE] = KEYMAP(  // layer 0 : default
         // Left Hand   |             |       |       |       |       |             |
-        KC_TRNS,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_TRNS,
+        KC_TRNS,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_MINS,
         KC_LALT,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_TRNS,
         KC_LCTL,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LSFT,        KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,
@@ -49,15 +49,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                               KC_TRNS,
                                                KC_SPC,KC_BSPC,KC_TRNS,
         // Right Hand    |       |      |       |       |                 |
-             KC_TRNS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_MINS,
-             KC_TRNS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_BSLS,
-                          KC_H,   KC_J,  KC_K,   KC_L,   LT(MDIA, KC_SCLN),GUI_T(KC_QUOT),
-             KC_LGUI,     KC_N,   KC_M,  KC_COMM,KC_DOT, CTL_T(KC_SLSH),   KC_RSFT,
-                                  KC_UP, KC_DOWN,KC_TRNS,KC_TRNS,          KC_TRNS,
-	     KC_TRNS,            KC_TRNS, //  <- Right Hand Island START
+             KC_PLUS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_TRNS,
+             KC_TRNS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_RALT,
+	                  KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,          KC_RCTL,
+             KC_LGUI,     KC_N,   KC_M,  KC_COMM,KC_DOT, KC_SLSH,          KC_RSFT,
+                                  KC_UP, KC_DOWN,KC_BSLS,KC_GRV,           KC_TRNS,
+	     KC_TRNS,     KC_TRNS, //  <- Right Hand Island START
              KC_TRNS,
-             KC_TRNS,KC_TRNS,KC_TRNS
+             KC_TRNS,     KC_DELT,KC_ENT
     ),
+// note: GUI_T(KC_QUOT) gives you ' / Cmd, might be useful...
+//       CTL_T(KC_SLSH) - gives //Ctrl
+//       LT(MDIA, KC_SCLN) - guessing, but probably is a media modifier press with a semicolon tap?
 /* Keymap 1: Symbol Layer
  *
  * ,---------------------------------------------------.           ,--------------------------------------------------.
