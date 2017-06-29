@@ -7,28 +7,7 @@
 #define SYMB 1 // symbols
 #define MDIA 2 // media keys
 
-#define NAV 5
-#define FN 6
-
-// Extra Space-Cadet shifts. Ref: https://docs.qmk.fm/space_cadet_shift.html
-#ifndef LCCO_KEY // Left Cadet Curly Open, LCtrl / {
-  #define LCCO_KEY KC_LBRACKET // must be used with shift mod to get {
-#endif
-#ifndef RCCC_KEY // Right Cadet Curly Close, RCtrl / }
-  #define RCCC_KEY KC_RBRACKET // must be used with shift-mod to get }
-#endif
-#ifndef LCBO_KEY // Left Cadet Bracket Open, LAlt / [
-  #define LCBO_KEY KC_LBRACKET
-#endif
-#ifndef RCBC_KEY // Right Cadet Bracket Close, RAlt / ]
-  #define RCBC_KEY KC_RBRACKET
-#endif
-
 enum custom_keycodes {
-  KC_LCCO,
-  KC_RCCC,
-  KC_LCBO,
-  KC_RCBC,
   PLACEHOLDER = SAFE_RANGE, // can always be here
   EPRM,
   VRSN,
@@ -39,49 +18,46 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |        |   1  |   2  |   3  |   4  |   5  |      |           |  +   |   6  |   7  |   8  |   9  |   0  |        |
+ * |   =    |   1  |   2  |   3  |   4  |   5  | LEFT |           | RIGHT|   6  |   7  |   8  |   9  |   0  |   -    |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * | LAlt/[ |   Q  |   W  |   E  |   R  |   T  | Tab  |           |      |   Y  |   U  |   I  |   O  |   P  | RAlt   |
+ * | Del    |   Q  |   W  |   E  |   R  |   T  |  L1  |           |  L1  |   Y  |   U  |   I  |   O  |   P  |   \    |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * | LCtrl/{|   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |   ;  | RCtrl/}|
- * |--------+------+------+------+------+------| LCmd |           | RCmd |------+------+------+------+------+--------|
- * |LShift/(|  Z   |   X  |   C  |   V  |   B  | /Win |           | /Win |   N  |   M  |   ,  |   .  |   /  |RShift/)|
+ * | BkSp   |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |; / L2|' / Cmd |
+ * |--------+------+------+------+------+------| Hyper|           | Meh  |------+------+------+------+------+--------|
+ * | LShift |Z/Ctrl|   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   ,  |   .  |//Ctrl| RShift |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | LCmd |  '"  |  -   | Left | Right|                                       | Down |  Up  |   \  |   `  | RCmd |
+ *   |Grv/L1|  '"  |AltShf| Left | Right|                                       |  Up  | Down |   [  |   ]  | ~L1  |
  *   `----------------------------------'                                       `----------------------------------'
- *                                        ,-------------.       ,---------------.
- *                                        |      |      |       |      |        |
+ *                                        ,-------------.       ,-------------.
+ *                                        | App  | LGui |       | Alt  |Ctrl/Esc|
  *                                 ,------|------|------|       |------+--------+------.
- *                                 |      | Back |      |       |      |        |      |
- *                                 | Space| Space|------|       |------|  Del   |Enter |
- *                                 |      |      |      |       |      |        |      |
+ *                                 |      |      | Home |       | PgUp |        |      |
+ *                                 | Space|Backsp|------|       |------|  Tab   |Enter |
+ *                                 |      |ace   | End  |       | PgDn |        |      |
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
 // Otherwise, it needs KC_*
 [BASE] = KEYMAP(  // layer 0 : default
-        // Left Hand   |             |       |       |       |       |             |
-        KC_TRNS,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_TRNS,
-        KC_LCBO,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_TAB,
-        KC_LCCO,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
-        KC_LSPO,        KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,
-        KC_LGUI,        KC_QUOT,      KC_MINS,        KC_LEFT,KC_RGHT,
-	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
-                                                              KC_TRNS,
-                                               KC_SPC,KC_BSPC,KC_TRNS,
-        // Right Hand    |       |      |       |       |                 |
-             KC_PLUS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_TRNS,
-             KC_TRNS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_RCBC,
-	                  KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,          KC_RCCC,
-             KC_RGUI,     KC_N,   KC_M,  KC_COMM,KC_DOT, KC_SLSH,          KC_RSPC,
-                                  KC_DOWN,KC_UP, KC_BSLS,KC_GRV,           KC_RGUI,
-	     KC_TRNS,     KC_TRNS, //  <- Right Hand Island START
-             KC_TRNS,
-             KC_TRNS,     KC_DELT,KC_ENT
+        // left hand
+        KC_EQL,         KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_LEFT,
+        KC_DELT,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   TG(SYMB),
+        KC_BSPC,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
+        KC_LSFT,        CTL_T(KC_Z),  KC_X,   KC_C,   KC_V,   KC_B,   ALL_T(KC_NO),
+        LT(SYMB,KC_GRV),KC_QUOT,      LALT(KC_LSFT),  KC_LEFT,KC_RGHT,
+                                              ALT_T(KC_APP),  KC_LGUI,
+                                                              KC_HOME,
+                                               KC_SPC,KC_BSPC,KC_END,
+        // right hand
+             KC_RGHT,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_MINS,
+             TG(SYMB),    KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_BSLS,
+                          KC_H,   KC_J,  KC_K,   KC_L,   LT(MDIA, KC_SCLN),GUI_T(KC_QUOT),
+             MEH_T(KC_NO),KC_N,   KC_M,  KC_COMM,KC_DOT, CTL_T(KC_SLSH),   KC_RSFT,
+                                  KC_UP, KC_DOWN,KC_LBRC,KC_RBRC,          KC_FN1,
+             KC_LALT,        CTL_T(KC_ESC),
+             KC_PGUP,
+             KC_PGDN,KC_TAB, KC_ENT
     ),
-// note: GUI_T(KC_QUOT) gives you ' / Cmd, might be useful...
-//       CTL_T(KC_SLSH) - gives //Ctrl
-//       LT(MDIA, KC_SCLN) - guessing, but probably is a media modifier press with a semicolon tap?
 /* Keymap 1: Symbol Layer
  *
  * ,---------------------------------------------------.           ,--------------------------------------------------.
@@ -168,7 +144,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 const uint16_t PROGMEM fn_actions[] = {
-  [1] = ACTION_LAYER_TAP_TOGGLE(SYMB),                // FN1 - Momentary Layer 1 (Symbols)
+    [1] = ACTION_LAYER_TAP_TOGGLE(SYMB)                // FN1 - Momentary Layer 1 (Symbols)
 };
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
@@ -188,11 +164,6 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       }
     return MACRO_NONE;
 };
-
-// Used for curly-cadet-shift; like space-cadet except it inserts {}
-static uint16_t ccs_timer[2] = {0, 0};
-// Used for bracket-cadet-shift; inserts []
-static uint16_t bcs_timer[2] = {0, 0};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -217,67 +188,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case KC_LCCO: {
-      // TODO: write documentaiton on the space-cadet pattern implemented here (a total of four times!)
-      if (record->event.pressed) {
-        ccs_timer[0] = timer_read ();
-        register_mods(MOD_BIT(KC_LCTL));
-      }
-      else {
-	unregister_mods(MOD_BIT(KC_LCTL));	  
-        if (timer_elapsed(ccs_timer[0]) < TAPPING_TERM) {	      
-	  register_mods(MOD_BIT(KC_LSFT));
-          register_code(LCCO_KEY);
-          unregister_code(LCCO_KEY);
-	  unregister_mods(MOD_BIT(KC_LSFT));
-        }       
-      }
-    return false;
-    }
-    case KC_RCCC: {
-      if (record->event.pressed) {
-        ccs_timer[1] = timer_read ();
-        register_mods(MOD_BIT(KC_RCTL));
-      }
-      else {
-	unregister_mods(MOD_BIT(KC_RCTL));	  
-        if (timer_elapsed(ccs_timer[1]) < TAPPING_TERM) {	      
-	  register_mods(MOD_BIT(KC_RSFT));
-          register_code(RCCC_KEY);
-          unregister_code(RCCC_KEY);
-	  unregister_mods(MOD_BIT(KC_RSFT));
-        }
-      }
-    return false;
-    }
-    case KC_LCBO: {
-      if (record->event.pressed) {
-        bcs_timer[0] = timer_read ();
-        register_mods(MOD_BIT(KC_LALT));
-      }
-      else {
-	unregister_mods(MOD_BIT(KC_LALT));	  
-        if (timer_elapsed(bcs_timer[0]) < TAPPING_TERM) {	      
-          register_code(LCBO_KEY);
-          unregister_code(LCBO_KEY);
-        }
-      }
-    return false;
-    }
-    case KC_RCBC: {
-      if (record->event.pressed) {
-        bcs_timer[1] = timer_read ();
-        register_mods(MOD_BIT(KC_RALT));
-      }
-      else {
-	unregister_mods(MOD_BIT(KC_RALT));	  
-        if (timer_elapsed(bcs_timer[1]) < TAPPING_TERM) {	      
-          register_code(RCBC_KEY);
-          unregister_code(RCBC_KEY);
-        }
-      }
-    return false;
-    }
   }
   return true;
 }
