@@ -4,8 +4,9 @@
 #include "version.h"
 
 #define BASE 0 // default layer
-#define SYMB 1 // symbols
-#define MDIA 2 // media keys
+#define ALPH 1 // alpha layer
+#define SYMB 2 // symbols
+#define MDIA 3 // media keys
 
 #define NAV 5
 #define FN 6
@@ -68,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LGUI,        KC_QUOT,      KC_MINS,        KC_LEFT,KC_RGHT,
 	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
                                                               KC_TRNS,
-                                               KC_SPC,KC_BSPC,KC_TRNS,
+                                             LT(ALPH, KC_SPC),KC_BSPC,KC_TRNS,
         // Right Hand    |       |      |       |       |                 |
              KC_PLUS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_TRNS,
              KC_TRNS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_RCBC,
@@ -82,7 +83,50 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // note: GUI_T(KC_QUOT) gives you ' / Cmd, might be useful...
 //       CTL_T(KC_SLSH) - gives //Ctrl
 //       LT(MDIA, KC_SCLN) - guessing, but probably is a media modifier press with a semicolon tap?
-/* Keymap 1: Symbol Layer
+/* Keymap 1: Basic layer
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |   1  |   2  |   3  |   4  |   5  |      |           |  +   |   6  |   7  |   8  |   9  |   0  |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * | LAlt/[ |   Q  |   W  |   E  |   R  |   T  | Tab  |           |      |   Y  |   U  |   I  |   O  |   P  | RAlt   |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * | LCtrl/{|   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |   ;  | RCtrl/}|
+ * |--------+------+------+------+------+------| LCmd |           | RCmd |------+------+------+------+------+--------|
+ * |LShift/(|  Z   |   X  |   C  |   V  |   B  | /Win |           | /Win |   N  |   M  |   ,  |   .  |   /  |RShift/)|
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   | LCmd |  '"  |  -   | Left | Right|                                       | Down |  Up  |   \  |   `  | RCmd |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,---------------.
+ *                                        |      |      |       |      |        |
+ *                                 ,------|------|------|       |------+--------+------.
+ *                                 |      | Back |      |       |      |        |      |
+ *                                 | Space| Space|------|       |------|  Del   |Enter |
+ *                                 |      |      |      |       |      |        |      |
+ *                                 `--------------------'       `----------------------'
+ */
+// If it accepts an argument (i.e, is a function), it doesn't need KC_.
+// Otherwise, it needs KC_*
+[ALPH] = KEYMAP(  // layer 0 : default
+        // Left Hand   |             |       |       |       |       |             |
+        KC_TRNS,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_TRNS,
+        KC_LCBO,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_TAB,
+        KC_LCCO,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
+        KC_LSPO,        KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,
+        KC_LGUI,        KC_QUOT,      KC_MINS,        KC_DOWN,KC_UP,
+	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
+                                                              KC_TRNS,
+                                             LT(MDIA, KC_SPC),KC_BSPC,KC_TRNS,
+        // Right Hand    |       |      |       |       |                 |
+             KC_PLUS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_TRNS,
+             KC_TRNS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_RCBC,
+	                  KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,          KC_RCCC,
+             KC_RGUI,     KC_N,   KC_M,  KC_COMM,KC_DOT, KC_SLSH,          KC_RSPC,
+                                  KC_LEFT,KC_RIGHT, KC_BSLS,KC_GRV,           KC_RGUI,
+	     KC_TRNS,     KC_TRNS, //  <- Right Hand Island START
+             KC_TRNS,
+             KC_TRNS,     KC_DELT,KC_ENT
+    ),
+/* Keymap 2: Symbol Layer
  *
  * ,---------------------------------------------------.           ,--------------------------------------------------.
  * |Version  |  F1  |  F2  |  F3  |  F4  |  F5  |      |           |      |  F6  |  F7  |  F8  |  F9  |  F10 |   F11  |
@@ -124,7 +168,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_TRNS,
        KC_TRNS, RGB_HUD, RGB_HUI
 ),
-/* Keymap 2: Media and mouse keys
+/* Keymap 3: Media and mouse keys
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
@@ -217,8 +261,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case KC_LCCO: {
-      // TODO: write documentaiton on the space-cadet pattern implemented here (a total of four times!)
+    case KC_LCCO: {  // LCtrl {
+      // This space cadet shift implementation is stolen from
+      // https://github.com/qmk/qmk_firmware/blob/d1fb8d2296889ee1aaa08988c8951eb5f12d930b/quantum/quantum.c
+      // Requires 2x custom keycodes, two timer values ine one array, and two case statements her
       if (record->event.pressed) {
         ccs_timer[0] = timer_read ();
         register_mods(MOD_BIT(KC_LCTL));
@@ -234,7 +280,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     return false;
     }
-    case KC_RCCC: {
+    case KC_RCCC: { // RCtrl }
       if (record->event.pressed) {
         ccs_timer[1] = timer_read ();
         register_mods(MOD_BIT(KC_RCTL));
@@ -250,7 +296,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     return false;
     }
-    case KC_LCBO: {
+    case KC_LCBO: {  // LAlt [
       if (record->event.pressed) {
         bcs_timer[0] = timer_read ();
         register_mods(MOD_BIT(KC_LALT));
@@ -264,7 +310,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     return false;
     }
-    case KC_RCBC: {
+    case KC_RCBC: {  // RAlt ]
       if (record->event.pressed) {
         bcs_timer[1] = timer_read ();
         register_mods(MOD_BIT(KC_RALT));
