@@ -43,7 +43,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |        |   1  |   2  |   3  |   4  |   5  |      |           |  +   |   6  |   7  |   8  |   9  |   0  |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * | LAlt/[ |   Q  |   W  |   E  |   R  |   T  | Tab  |           |      |   Y  |   U  |   I  |   O  |   P  | RAlt   |
- * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |--------+------+------+------+------+------|/ALPH |           |      |------+------+------+------+------+--------|
  * | LCtrl/{|   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |   ;  | RCtrl/}|
  * |--------+------+------+------+------+------| LCmd |           | RCmd |------+------+------+------+------+--------|
  * |LShift/(|  Z   |   X  |   C  |   V  |   B  | /Win |           | /Win |   N  |   M  |   ,  |   .  |   /  |RShift/)|
@@ -78,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                   KC_DOWN,KC_UP, KC_BSLS,KC_GRV,           KC_RGUI,
 	     KC_TRNS,     KC_TRNS, //  <- Right Hand Island START
              KC_TRNS,
-             KC_TRNS,     KC_DELT,KC_ENT
+             KC_TRNS,     KC_DELT,LT(ALPH, KC_ENT)
     ),
 // note: GUI_T(KC_QUOT) gives you ' / Cmd, might be useful...
 //       CTL_T(KC_SLSH) - gives //Ctrl
@@ -88,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |   1  |   2  |   3  |   4  |   5  |      |           |  +   |   6  |   7  |   8  |   9  |   0  |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * | LAlt/[ |   Q  |   W  |   E  |   R  |   T  | Tab  |           |      |   Y  |   U  |   I  |   O  |   P  | RAlt   |
+ * | LAlt/[ |   Q  |   W  |   E  |   R  |   T  | Tab  |           |      |   Y  |   U  |   I  |   O  |   P  | RAlt/] |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * | LCtrl/{|   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |   ;  | RCtrl/}|
  * |--------+------+------+------+------+------| LCmd |           | RCmd |------+------+------+------+------+--------|
@@ -108,20 +108,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Otherwise, it needs KC_*
 [ALPH] = KEYMAP(  // layer 0 : default
         // Left Hand   |             |       |       |       |       |             |
-        KC_TRNS,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_TRNS,
-        KC_LCBO,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_TAB,
-        KC_LCCO,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
-        KC_LSPO,        KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,
-        KC_LGUI,        KC_QUOT,      KC_MINS,        KC_DOWN,KC_UP,
+        KC_TRNS,        KC_6,         KC_7,   KC_8,   KC_9,   KC_0,   KC_PLUS,
+        KC_RCBC,        KC_Y,         KC_U,   KC_I,   KC_O,   KC_P,   KC_TRNS,
+	KC_RCCC,        KC_H,         KC_J,   KC_K,   KC_L,   KC_SCLN,
+	KC_RSPC,        KC_N,         KC_M,   KC_COMM,KC_DOT, KC_SLSH, KC_RGUI,
+        KC_RGUI,        KC_GRV,       KC_BSLS,KC_DOWN,KC_UP,
 	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
                                                               KC_TRNS,
-                                             LT(MDIA, KC_SPC),KC_BSPC,KC_TRNS,
+                                              KC_TRNS,KC_BSPC,KC_TRNS,
         // Right Hand    |       |      |       |       |                 |
-             KC_PLUS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_TRNS,
-             KC_TRNS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_RCBC,
-	                  KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,          KC_RCCC,
-             KC_RGUI,     KC_N,   KC_M,  KC_COMM,KC_DOT, KC_SLSH,          KC_RSPC,
-                                  KC_LEFT,KC_RIGHT, KC_BSLS,KC_GRV,           KC_RGUI,
+	     KC_TRNS,     KC_1,   KC_2,  KC_3,   KC_4,   KC_5,             KC_TRNS,
+	     KC_TAB,      KC_Q,   KC_W,  KC_E,   KC_R,   KC_T,             KC_LCBO,
+             KC_A,        KC_S,   KC_D,  KC_F,   KC_G,   KC_LCCO,
+             KC_LGUI,     KC_Z,   KC_X,  KC_C,   KC_V,   KC_B,             KC_LSPO,
+                                  KC_LEFT,KC_RIGHT,KC_MINS,KC_QUOT,        KC_RGUI,
 	     KC_TRNS,     KC_TRNS, //  <- Right Hand Island START
              KC_TRNS,
              KC_TRNS,     KC_DELT,KC_ENT
