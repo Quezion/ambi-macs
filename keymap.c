@@ -2,14 +2,13 @@
 #include "debug.h"
 #include "action_layer.h"
 #include "version.h"
+#include "action_macro.h"
 
 #define BASE 0 // default layer
 #define ALPH 1 // alpha layer
 #define SYMB 2 // symbols
-#define MDIA 3 // media keys
-
-#define NAV 5
-#define FN 6
+#define NAV 3 // media keys
+#define FN 4 // varous FNs
 
 // Extra Space-Cadet shifts. Ref: https://docs.qmk.fm/space_cadet_shift.html
 #ifndef LCCO_KEY // Left Cadet Curly Open, LCtrl / {
@@ -24,6 +23,8 @@
 #ifndef RCBC_KEY // Right Cadet Bracket Close, RAlt / ]
   #define RCBC_KEY KC_RBRACKET
 #endif
+
+#define M_WMAX M(0) // Window maximize; requires Spectacle on OSX
 
 enum custom_keycodes {
   KC_LCCO,
@@ -40,15 +41,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |        |   1  |   2  |   3  |   4  |   5  |      |           |  +   |   6  |   7  |   8  |   9  |   0  |        |
+ * | LEAD   |   1  |   2  |   3  |   4  |   5  |  -   |           |  +   |   6  |   7  |   8  |   9  |   0  |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * | LAlt/[ |   Q  |   W  |   E  |   R  |   T  | Tab  |           | [Nav]|   Y  |   U  |   I  |   O  |   P  | RAlt   |
+ * | LAlt/[ |   Q  |   W  |   E  |   R  |   T  | Tab  |           |  -   |   Y  |   U  |   I  |   O  |   P  | RAlt/] |
  * |--------+------+------+------+------+------|/ALPH |           |      |------+------+------+------+------+--------|
  * | LCtrl/{|   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |   ;  | RCtrl/}|
  * |--------+------+------+------+------+------| LCmd |           | RCmd |------+------+------+------+------+--------|
  * |LShift/(|  Z   |   X  |   C  |   V  |   B  | /Win |           | /Win |   N  |   M  |   ,  |   .  |   /  |RShift/)|
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | LCmd |  '"  |  -   | Left | Right|                                       | Down |  Up  |   \  |   `  | RCmd |
+ *   | LCmd |  '"  | LEAD | Left | Right|                                       | Down |  Up  |   \  |   `  | RCmd |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,---------------.
  *                                        |      |      |       |      |        |
@@ -62,27 +63,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Otherwise, it needs KC_*
 [BASE] = KEYMAP(  // layer 0 : default
         // Left Hand   |             |       |       |       |       |             |
-        KC_LEAD,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_TRNS,
+        KC_LEAD,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_MINS,
         KC_LCBO,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   LT(ALPH, KC_TAB),
         KC_LCCO,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LSPO,        KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,
-        KC_LGUI,        KC_QUOT,      KC_MINS,        KC_LEFT,KC_RGHT,
+        KC_LGUI,        KC_QUOT,      KC_LEAD,        KC_LEFT,KC_RGHT,
 	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
                                                               KC_TRNS,
                                              LT(ALPH, KC_SPC),KC_BSPC,KC_TRNS,
         // Right Hand    |       |      |       |       |                 |
-             KC_PLUS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_TRNS,
-	     KC_TRNS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_RCBC,
+             KC_PLUS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             M_WMAX,
+	     KC_MINS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_RCBC,
 	                  KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,          KC_RCCC,
              KC_RGUI,     KC_N,   KC_M,  KC_COMM,KC_DOT, KC_SLSH,          KC_RSPC,
                                   KC_DOWN,KC_UP, KC_BSLS,KC_GRV,           KC_RGUI,
 	     KC_TRNS,     KC_TRNS, //  <- Right Hand Island START
              KC_TRNS,
-	     KC_TRNS,     LT(ALPH, KC_DELT),LT(ALPH, KC_ENT)
+	     KC_TRNS,     LT(NAV, KC_DELT),LT(ALPH, KC_ENT)
     ),
 // note: GUI_T(KC_QUOT) gives you ' / Cmd, might be useful...
 //       CTL_T(KC_SLSH) - gives //Ctrl
-//       LT(MDIA, KC_SCLN) - guessing, but probably is a media modifier press with a semicolon tap?
+//       LT(NAV, KC_SCLN) - guessing, but probably is a nav modifier press with a semicolon tap?
 /* Keymap 1: Basic layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
@@ -168,7 +169,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_TRNS,
        KC_TRNS, RGB_HUD, RGB_HUI
 ),
-/* Keymap 3: Media and mouse keys
+/* Keymap 3: NAVigation keys (media, mouse, browser)
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      | Mute |      |      |           |      |      |      |      |      |      |        |
@@ -189,8 +190,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 |      |      |      |       |      |      |      |
  *                                 `--------------------'       `--------------------'
  */
-// MEDIA AND MOUSE
-[MDIA] = KEYMAP(
+// NAVigation{
+[NAV] = KEYMAP(
        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MUTE, KC_TRNS, KC_TRNS,
        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_VOLU, KC_TRNS, KC_TRNS,
        KC_TRNS, KC_TRNS, KC_TRNS, KC_MPRV, KC_MPLY, KC_MNXT,
@@ -215,16 +216,21 @@ const uint16_t PROGMEM fn_actions[] = {
   [1] = ACTION_LAYER_TAP_TOGGLE(SYMB),                // FN1 - Momentary Layer 1 (Symbols)
 };
 
+// Down LGui, Down LAlt, Down+Up F, Up LAlt, Up LGui, Macro END
+#define WMAX_MACRO MACRO(D(LGUI), D(LALT), T(F), U(LALT), U(LGUI), END)
+
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
   // MACRODOWN only works in this function
       switch(id) {
-        case 0:
+	case 0:
+	  return WMAX_MACRO;
+        case 1:
         if (record->event.pressed) {
           SEND_STRING (QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
         }
         break;
-        case 1:
+        case 2:
         if (record->event.pressed) { // For resetting EEPROM
           eeconfig_init();
         }
@@ -330,30 +336,74 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
-
+  ergodox_led_all_on();
+  for (int i = LED_BRIGHTNESS_HI; i > LED_BRIGHTNESS_LO; i--) {
+    ergodox_led_all_set (i);
+    wait_ms (5);
+  }
+  wait_ms(1000);
+  for (int i = LED_BRIGHTNESS_LO; i > 0; i--) {
+    ergodox_led_all_set (i);
+    wait_ms (10);
+  }
+  ergodox_led_all_off();
 };
 
+// Stolen from https://docs.qmk.fm/leader_key.html
+LEADER_EXTERNS();
 
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void) {
-
-    uint8_t layer = biton32(layer_state);
-
-    ergodox_board_led_off();
-    ergodox_right_led_1_off();
-    ergodox_right_led_2_off();
-    ergodox_right_led_3_off();
-    switch (layer) {
-      // TODO: Make this relevant to the ErgoDox EZ.
-        case 1:
-            ergodox_right_led_1_on();
-            break;
-        case 2:
-            ergodox_right_led_2_on();
-            break;
-        default:
-            // none
-            break;
+  LEADER_DICTIONARY() {
+    leading = false;
+    leader_end();
+    SEQ_ONE_KEY(KC_S) {
+      register_mods(MOD_BIT(KC_LSFT));
+      register_code(KC_S);
+      unregister_code(KC_S);
+      unregister_mods(MOD_BIT(KC_LSFT));
     }
+    SEQ_ONE_KEY(KC_F) {
+      // Reference: https://docs.qmk.fm/macros.html
+      action_macro_play(WMAX_MACRO);
+    }
+    SEQ_TWO_KEYS(KC_C, KC_C) {
+      register_mods(MOD_BIT(KC_LALT));
+      register_code(KC_X);
+      unregister_code(KC_X);
+      unregister_mods(MOD_BIT(KC_LALT));
+      SEND_STRING("cider-connect");
+      register_code(KC_ENT);
+      unregister_code(KC_ENT);
+    }
+    SEQ_TWO_KEYS(KC_A, KC_S) {
+      register_code(KC_H);
+      unregister_code(KC_H);
+    }
+    SEQ_THREE_KEYS(KC_A, KC_S, KC_D) {
+      register_code(KC_LGUI);
+      register_code(KC_S);
+      unregister_code(KC_S);
+      unregister_code(KC_LGUI);
+    }
+  }
+  
+  uint8_t layer = biton32(layer_state);
 
+  ergodox_board_led_off();
+  ergodox_right_led_1_off();
+  ergodox_right_led_2_off();
+  ergodox_right_led_3_off();
+  switch (layer) {
+    // TODO: Make this relevant to the ErgoDox EZ.
+      case 1:
+          ergodox_right_led_1_on();
+          break;
+      case 2:
+          ergodox_right_led_2_on();
+          break;
+      default:
+          // none
+          break;
+  }
 };
