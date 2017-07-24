@@ -6,8 +6,9 @@
 
 #define BASE 0 // default layer
 #define ALPH 1 // alpha layer
-#define SYMB 2 // symbols
-#define NAV 3 // media keys
+#define SYMB 2 // symbols (unused)
+#define NAV 3 // nav layer with OS+Emacs bindings
+#define MDIA 4 // media layer
 #define FN 4 // varous FNs
 
 // Extra Space-Cadet shifts. Ref: https://docs.qmk.fm/space_cadet_shift.html
@@ -24,7 +25,12 @@
   #define RCBC_KEY KC_RBRACKET
 #endif
 
+// MACRO DEFINITIONS
+
+// all "Window" operations require Spectacle on OSX
 #define M_WMAX M(0) // Window maximize; requires Spectacle on OSX
+#define M_WLEFT M(1) // Window to left display
+#define M_WRGHT M(2) // Window to right display
 
 enum custom_keycodes {
   KC_LCCO,
@@ -34,8 +40,41 @@ enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
   EPRM,
   VRSN,
-  RGB_SLD
+  RGB_SLD,
 };
+
+/* TODO and misc:
+REAMINING LAYOUT QUESTIONS
+* How to hit escape?
+* How to hit backslash?
+* I want colon : easy to hit on left hand
+* Dashes on left hand are hard to hit
+* Do cadet shift of LCMD/< and RCMD/>
+
+Thoughts:
+Make the current - (the upper right most button of the left hand) into a "tap for dash, double tab for underscore
+                 - do the same thing for the "plus" on the right side
+                 - turn the leader into a "tap vs hold" button that does "<" and ">", maintaining cadet shifts on left side
+                 - this is consistent with the rest of the space cadet shifts and easy to hit on one hand
+                 - add xtra functionlty to right hand ,./; keys bc some of these will be covered by other binds*/
+
+/*  TODO: M-x forward-sexp (along with backward, down, and up) would be good to have on right hand
+          Create "hold backspace" layer on left hand for NAV
+          Turn current NAV into MEDIA layer?
+          Put the pageup/pagedown style buttons on the lefthand NAV layer
+
+Also install https://github.com/purcell/exec-path-from-shell to ensure consistent path;
+  this sould obviate a fix in the below init.el that sets OSX specific shell stuff
+ */
+
+// TODO: make "hold LEAD" into another alpha shift? (is this the best use of it?)
+// TODO: Get = hittable for the love of god. and what about backtick/tilde
+// TODO: better mousekeys support? https://docs.qmk.fm/mouse_keys.html
+// TODO: double tap Z, X for " and -? might be better to leave Z as punctuation shift tho
+//       ref: https://docs.qmk.fm/tap_dance.html
+// TODO: more useful double taps? Y, and the punctuation on the bottom right ergodox could be repurposed?
+// TODO: maybe just use the current planned "HYPER" (on backspace) to instead be "Hold Z"
+//       it would be easy to make movement buttons that are ergonomic on ergodox & otherwise (using ESDF)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
@@ -47,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|/ALPH |           |      |------+------+------+------+------+--------|
  * | LCtrl/{|   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |   ;  | RCtrl/}|
  * |--------+------+------+------+------+------| LCmd |           | RCmd |------+------+------+------+------+--------|
- * |LShift/(|  Z   |   X  |   C  |   V  |   B  | /Win |           | /Win |   N  |   M  |   ,  |   .  |   /  |RShift/)|
+ * |LShift/(|Z/SYMB|   X  |   C  |   V  |   B  | /Win |           | /Win |   N  |   M  |   ,  |   .  |   /  |RShift/)|
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   | LCmd |  '"  | LEAD | Left | Right|                                       | Down |  Up  |   \  |   `  | RCmd |
  *   `----------------------------------'                                       `----------------------------------'
@@ -56,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      | Back |      |       |      |        |      |
  *                                 | Space| Space|------|       |------|  Del   |Enter |
- *                                 |/Alpha|      |      |       |      | /Nav   |/Alpha|
+4` *                               |/Alpha|      | Esc  |       |      | /Nav   |/Alpha|
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
@@ -66,20 +105,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LEAD,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_MINS,
         KC_LCBO,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   LT(ALPH, KC_TAB),
         KC_LCCO,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
-        KC_LSPO,        KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,
-        KC_LGUI,        KC_QUOT,      KC_LEAD,        KC_LEFT,KC_RGHT,
+        KC_LSPO,LT(SYMB,KC_Z),        KC_X,   KC_C,   KC_V,   KC_B,   KC_LGUI,
+        KC_LGUI,        KC_QUOT,      KC_MINS,KC_LEFT,KC_RGHT,
 	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
                                                               KC_TRNS,
-                                             LT(ALPH, KC_SPC),KC_BSPC,KC_TRNS,
+	LT(ALPH, KC_SPC),LT(ALL_T(KC_NO), KC_BSPC),KC_ESC, // ERROR: does the nested LT break everything?
         // Right Hand    |       |      |       |       |                 |
-             KC_PLUS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             M_WMAX,
+	     KC_PLUS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,        ALL_T(KC_NO),
 	     KC_MINS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_RCBC,
 	                  KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,          KC_RCCC,
-             KC_RGUI,     KC_N,   KC_M,  KC_COMM,KC_DOT, KC_SLSH,          KC_RSPC,
+             KC_RGUI,     KC_N,   KC_M,  KC_COMM,KC_DOT,LT(SYMB,KC_SLSH),  KC_RSPC,
                                   KC_DOWN,KC_UP, KC_BSLS,KC_GRV,           KC_RGUI,
 	     KC_TRNS,     KC_TRNS, //  <- Right Hand Island START
              KC_TRNS,
-	     KC_TRNS,     LT(NAV, KC_DELT),LT(ALPH, KC_ENT)
+             KC_TRNS,LT(MDIA, KC_DELT),LT(ALPH, KC_ENT)
     ),
 // note: GUI_T(KC_QUOT) gives you ' / Cmd, might be useful...
 //       CTL_T(KC_SLSH) - gives //Ctrl
@@ -116,7 +155,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_RGUI,        KC_GRV,       KC_BSLS,KC_DOWN,KC_UP,
 	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
                                                               KC_TRNS,
-	                                       KC_ENT,KC_DELT,KC_TRNS,
+	                             KC_ENT,LT(MDIA, KC_DELT),KC_TRNS,
         // Right Hand    |       |      |       |       |                 |
 	     KC_TRNS,     KC_1,   KC_2,  KC_3,   KC_4,   KC_5,             KC_TRNS,
 	     KC_TAB,      KC_Q,   KC_W,  KC_E,   KC_R,   KC_T,             KC_LCBO,
@@ -125,18 +164,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                   KC_LEFT,KC_RIGHT,KC_MINS,KC_QUOT,        KC_RGUI,
 	     KC_TRNS,     KC_TRNS, //  <- Right Hand Island START
              KC_TRNS,
-             KC_TRNS,     KC_BSPC,KC_SPC
+             KC_TRNS,LT(NAV, KC_BSPC),KC_SPC
     ),
 /* Keymap 2: Symbol Layer
+ * Wanted keys on left hand: # " ' ` ~
  *
  * ,---------------------------------------------------.           ,--------------------------------------------------.
  * |Version  |  F1  |  F2  |  F3  |  F4  |  F5  |      |           |      |  F6  |  F7  |  F8  |  F9  |  F10 |   F11  |
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
- * |         |   !  |   @  |   {  |   }  |   |  |      |           |      |   Up |   7  |   8  |   9  |   *  |   F12  |
+ * |         |   !  |   @  |      |      |   |  |      |           |      |   Up |   7  |   8  |   9  |   *  |   F12  |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |         |   #  |   $  |   (  |   )  |   `  |------|           |------| Down |   4  |   5  |   6  |   +  |        |
+ * |         |   #  |   $  |      |      |   `  |------|           |------| Down |   4  |   5  |   6  |   +  |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |         |   %  |   ^  |   [  |   ]  |   ~  |      |           |      |   &  |   1  |   2  |   3  |   \  |        |
+ * |         |   %  |   ^  |   "  |      |   ~  |      |           |      |   &  |   1  |   2  |   3  |   \  |        |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   | EPRM  |      |      |      |      |                                       |      |    . |   0  |   =  |      |
  *   `-----------------------------------'                                       `----------------------------------'
@@ -152,9 +192,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [SYMB] = KEYMAP(
        // left hand
        VRSN,   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_TRNS,
-       KC_TRNS,KC_EXLM,KC_AT,  KC_LCBR,KC_RCBR,KC_PIPE,KC_TRNS,
-       KC_TRNS,KC_HASH,KC_DLR, KC_LPRN,KC_RPRN,KC_GRV,
-       KC_TRNS,KC_PERC,KC_CIRC,KC_LBRC,KC_RBRC,KC_TILD,KC_TRNS,
+       KC_TRNS,KC_EXLM,KC_AT,  KC_TRNS,KC_TRNS,KC_PIPE,KC_TRNS,
+       KC_TRNS,KC_HASH,KC_DLR,  KC_GRV,KC_TRNS,KC_TRNS,
+       KC_TRNS,KC_PERC,KC_CIRC,KC_TRNS,KC_TRNS,KC_TILD,KC_TRNS,
           EPRM,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
                                        RGB_MOD,KC_TRNS,
                                                KC_TRNS,
@@ -169,16 +209,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_TRNS,
        KC_TRNS, RGB_HUD, RGB_HUI
 ),
-/* Keymap 3: NAVigation keys (media, mouse, browser)
+/* Keymap 3: Media keys (media, mouse, browser)
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      | Mute |      |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |      |      |      |VolUp |      |      |           |      |      | MsUp |      |      |      |        |
+ * |        |      |      |      |VolUp |      |      |           |      | Rclk | MsUp | Lclk |      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |      | Prev | Play | Next |------|           |------|MsLeft| Lclk |MsRigt|      |      |        |
+ * |        |      |      | Prev | Play | Next |------|           |------|MsLeft|MsDown|MsRigt|      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |      |      |VolDn |      |      |           | Rclk |      |MsDown|      |      |      |        |
+ * |        |      |      |      |VolDn |      |      |           |      |      |      |      |      |      |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      |      |      |                                       |      |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
@@ -190,7 +230,48 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 |      |      |      |       |      |      |      |
  *                                 `--------------------'       `--------------------'
  */
-// NAVigation{
+// Media{
+[MDIA] = KEYMAP(
+       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MUTE, KC_TRNS, KC_TRNS,
+       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_VOLU, KC_TRNS, KC_TRNS,
+       KC_TRNS, KC_TRNS, KC_TRNS, KC_MPRV, KC_MPLY, KC_MNXT,
+       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_VOLD, KC_TRNS, KC_TRNS,
+       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                                           KC_TRNS, KC_TRNS,
+                                                    KC_TRNS,
+                                  KC_TRNS, KC_TRNS, KC_TRNS,
+    // right hand
+       KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+       KC_TRNS,  KC_BTN2, KC_MS_U, KC_BTN1, KC_TRNS, KC_TRNS, KC_TRNS,
+                 KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS, KC_TRNS, KC_TRNS,
+       KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+       KC_TRNS, KC_TRNS,
+       KC_TRNS,
+       KC_TRNS, KC_TRNS, KC_WBAK
+),
+/* Keymap 4: nav layer
+ *                                
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |        |      |      |      | Mute |      |      |           |      |      |      |      |      |      |        |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * |        |      |      |      |sxp-^ |      |      |           |      |      | MsUp | Lclk |      |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |      |      | <-sxp|sxp-dn|sxp-> |------|           |------|MsLeft|MsDown|MsRigt|      |      |        |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |           | Rclk |      |      |      |      |      |        |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |      |      |      |      |      |                                       |      |      |      |      |      |
+ *   `----------------------------------'                                       `----------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        |      |      |       |      |      |
+ *                                 ,------|------|------|       |------+------+------.
+ *                                 |      |      |      |       |      |      |Brwser|
+ *                                 |      |      |------|       |------|      |Back  |
+ *                                 |      |      |      |       |      |      |      |
+ *                                 `--------------------'       `--------------------'
+ */
+// Nav {
 [NAV] = KEYMAP(
        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MUTE, KC_TRNS, KC_TRNS,
        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_VOLU, KC_TRNS, KC_TRNS,
@@ -202,14 +283,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                   KC_TRNS, KC_TRNS, KC_TRNS,
     // right hand
        KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-       KC_TRNS,  KC_TRNS, KC_MS_U, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                 KC_MS_L, KC_BTN1, KC_MS_R, KC_TRNS, KC_TRNS, KC_TRNS,
-       KC_BTN2,  KC_TRNS, KC_MS_D, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+       KC_TRNS,  KC_BTN2, KC_MS_U, KC_BTN1, KC_TRNS, KC_TRNS, KC_TRNS,
+                 KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS, KC_TRNS, KC_TRNS,
+       KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
        KC_TRNS, KC_TRNS,
        KC_TRNS,
        KC_TRNS, KC_TRNS, KC_WBAK
-),
+)
 };
 
 const uint16_t PROGMEM fn_actions[] = {
@@ -218,6 +299,8 @@ const uint16_t PROGMEM fn_actions[] = {
 
 // Down LGui, Down LAlt, Down+Up F, Up LAlt, Up LGui, Macro END
 #define WMAX_MACRO MACRO(D(LGUI), D(LALT), T(F), U(LALT), U(LGUI), END)
+#define WLEFT_MACRO MACRO(D(LGUI), D(LALT), D(LCTL), T(LEFT), U(LCTL), U(LALT), U(LGUI), END)
+#define WRGHT_MACRO MACRO(D(LGUI), D(LALT), D(LCTL), T(RGHT), U(LCTL), U(LALT), U(LGUI), END)
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
@@ -363,9 +446,15 @@ void matrix_scan_user(void) {
       unregister_code(KC_S);
       unregister_mods(MOD_BIT(KC_LSFT));
     }
-    SEQ_ONE_KEY(KC_F) {
+    SEQ_ONE_KEY(KC_W) {
       // Reference: https://docs.qmk.fm/macros.html
       action_macro_play(WMAX_MACRO);
+    }
+    SEQ_TWO_KEYS(KC_W,KC_LEFT) {
+      action_macro_play(WLEFT_MACRO);
+    }
+    SEQ_TWO_KEYS(KC_W,KC_RGHT) {
+      action_macro_play(WRGHT_MACRO);
     }
     SEQ_TWO_KEYS(KC_C, KC_C) {
       register_mods(MOD_BIT(KC_LALT));
