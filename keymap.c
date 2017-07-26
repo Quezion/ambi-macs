@@ -43,9 +43,26 @@ enum custom_keycodes {
   RGB_SLD,
 };
 
+//Tap Dance Declarations
+enum {
+  TD_X_QUOT = 0,
+  TD_V_MINS = 1
+};
+
+//Tap Dance Definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+  //Tap once for Esc, twice for Caps Lock
+  [TD_X_QUOT]  = ACTION_TAP_DANCE_DOUBLE(KC_X, KC_QUOT),
+  [TD_V_MINS]  = ACTION_TAP_DANCE_DOUBLE(KC_V, KC_MINS)
+// Other declarations would go here, separated by commas, if you have them
+};
+
+//In Layer declaration, add tap dance item in place of a key code
+TD(TD_X_QUOT)
+TD(TD_V_MINS)
+
 /* TODO and misc:
 REAMINING LAYOUT QUESTIONS
-* How to hit escape?
 * How to hit backslash?
 * I want colon : easy to hit on left hand
 * Dashes on left hand are hard to hit
@@ -95,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      | Back |      |       |      |        |      |
  *                                 | Space| Space|------|       |------|  Del   |Enter |
-4` *                               |/Alpha|      | Esc  |       |      | /Nav   |/Alpha|
+ *                                 |/Alpha|      | Esc  |       |      | /Nav   |/Alpha|
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
