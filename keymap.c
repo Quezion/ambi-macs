@@ -6,10 +6,10 @@
 
 #define BASE 0 // default layer
 #define ALPH 1 // alpha layer
-#define SYMB 2 // symbols (unused)
-#define NAV 3 // nav layer with OS+Emacs bindings
-#define MDIA 4 // media layer
-#define FN 4 // varous FNs
+#define MDIA 2 // media layer
+#define SYMB 3 // symbols (unused)
+#define NAV 4 // nav layer with OS+Emacs bindings
+#define FN 5 // varous FNs
 
 // Extra Space-Cadet shifts. Ref: https://docs.qmk.fm/space_cadet_shift.html
 // KC_LEFT_CURLY_BRACE
@@ -165,7 +165,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------| LCmd |           | RCmd |------+------+------+------+------+--------|
  * |LShift/(|  Z   |   X  |   C  |   V  |   B  | /Win |           | /Win |   N  |   M  |   ,  |   .  |   /  |RShift/)|
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | LCmd |  '"  |      | Left | Right|                                       | Down |  Up  |   \  |   `  | RCmd |
+ *   | LCmd |  '"  |O_MDIA| Left | Right|                                       | Down |  Up  |   \  |   `  | RCmd |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,---------------.
  *                                        |      |      |       |      |        |
@@ -197,7 +197,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              KC_TRNS,
              KC_TRNS,LT(NAV, KC_BSPC),KC_SPC
     ),
-/* Keymap 2: Symbol Layer
+/* Keymap 3: Symbol Layer
  * Wanted keys on left hand: # " ' ` ~
  *
  * ,---------------------------------------------------.           ,--------------------------------------------------.
@@ -209,7 +209,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |         |      |  ;   |  '   |  _   |      |      |           |      |   &  |   1  |   2  |   3  |   \  |        |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | EPRM  |      |      |      |      |                                       |      |    . |   0  |   =  |      |
+ *   | EPRM  |      |O_ALPH|      |      |                                       |      |    . |   0  |   =  |      |
  *   `-----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        |Animat|      |       |Toggle|Solid |
@@ -222,11 +222,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // SYMBOLS
 [SYMB] = KEYMAP(
        // left hand
-       VRSN,   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_TRNS,
-       KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
-       KC_TRNS,KC_HASH,KC_COLN, KC_DQT,KC_MINS,KC_TRNS,
-       KC_TRNS,KC_TRNS,KC_SCLN,KC_QUOT,KC_UNDS,KC_TRNS,KC_TRNS,
-          EPRM,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
+       VRSN,   KC_F1,      KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_TRNS,
+       KC_TRNS,KC_TRNS,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
+       KC_TRNS,KC_HASH,  KC_COLN, KC_DQT,KC_MINS,KC_TRNS,
+       KC_TRNS,KC_TRNS,  KC_SCLN,KC_QUOT,KC_UNDS,KC_TRNS,KC_TRNS,
+          EPRM,KC_TRNS,OSL(ALPH),KC_TRNS,KC_TRNS,
                                        RGB_MOD,KC_TRNS,
                                                KC_TRNS,
                                RGB_VAD,RGB_VAI,KC_TRNS,
@@ -240,7 +240,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_TRNS,
        KC_TRNS, RGB_HUD, RGB_HUI
 ),
-/* Keymap 3: Media keys (media, mouse, browser)
+/* Keymap 2: Media keys (media, mouse, browser)
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      | Mute |      |      |           |      |      |      |      |      |      |        |
@@ -263,11 +263,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 // Media{
 [MDIA] = KEYMAP(
-       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MUTE, KC_TRNS, KC_TRNS,
-       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_VOLU, KC_TRNS, KC_TRNS,
-       KC_TRNS, KC_TRNS, KC_TRNS, KC_MPRV, KC_MPLY, KC_MNXT,
-       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_VOLD, KC_TRNS, KC_TRNS,
-       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+       KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_MUTE, KC_TRNS, KC_TRNS,
+       KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_VOLU, KC_TRNS, KC_TRNS,
+       KC_TRNS, KC_TRNS,  KC_TRNS,  KC_MPRV, KC_MPLY, KC_MNXT,
+       KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_VOLD, KC_TRNS, KC_TRNS,
+       KC_TRNS, KC_TRNS,OSL(SYMB), KC_TRNS, KC_TRNS,
                                            KC_TRNS, KC_TRNS,
                                                     KC_TRNS,
                                   KC_TRNS, KC_TRNS, KC_TRNS,
