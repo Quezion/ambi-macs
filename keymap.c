@@ -14,11 +14,11 @@
 // Extra Space-Cadet shifts. Ref: https://docs.qmk.fm/space_cadet_shift.html
 // KC_LEFT_CURLY_BRACE
 #ifndef LCCO_KEY // Left Cadet Curly Open, LCtrl / {
-  #define LCCO_KEY KC_LBRACKET // must be used with shift mod to get {
+  #define LCCO_KEY KC_LBRACKET // note: not actual curlybrace, must be used with shift mod to get {}
 #endif
 // KC_RIGHT_CURLY_BRACE
 #ifndef RCCC_KEY // Right Cadet Curly Close, RCtrl / }
-  #define RCCC_KEY KC_RBRACKET // must be used with shift-mod to get }
+  #define RCCC_KEY KC_RBRACKET
 #endif
 #ifndef LCBO_KEY // Left Cadet Bracket Open, LAlt / [
   #define LCBO_KEY KC_LBRACKET
@@ -28,11 +28,11 @@
 #endif
 // KC_LEFT_ANGLE_BRACKET
 #ifndef LCAO_KEY // Left Cadet Left Angle Open, LCmd / <
-  #define LCAO_KEY KC_LBRACKET
+  #define LCAO_KEY KC_COMM // note: not actual anglebrace, must be used with shift mod to get <>
 #endif
 // KC_RIGHT_ANGLE_BRACKET
 #ifndef RCAC_KEY // Right Cadet Right Angle Close, RCmd / >
-  #define RCAC_KEY KC_RBRACKET
+  #define RCAC_KEY KC_DOT
 #endif
 
 // MACRO DEFINITIONS
@@ -43,16 +43,16 @@
 #define M_WRGHT M(2) // Window to right display
 
 enum custom_keycodes {
+  PLACEHOLDER = SAFE_RANGE, // sets enum to safe range for custom keycodes. Must be at top
+  EPRM,
+  VRSN,
+  RGB_SLD,
   KC_LCCO,
   KC_RCCC,
   KC_LCBO,
   KC_RCBC,
-  //KC_LCAO,
-  //KC_RCAC,
-  PLACEHOLDER = SAFE_RANGE, // can always be here
-  EPRM,
-  VRSN,
-  RGB_SLD,
+  KC_LCAO,
+  KC_RCAC
 };
 
 //Tap Dance Declarations
@@ -137,7 +137,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCBO,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,      LT(ALPH, KC_TAB),
         KC_LCCO,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LSPO,LT(SYMB,KC_Z),        KC_X,   KC_C,   KC_V,LT(SYMB,KC_B),KC_LGUI,
-        KC_LGUI,      KC_QUOT,   OSL(ALPH),KC_LEFT,KC_RGHT,
+        KC_LCAO,      KC_QUOT,   OSL(ALPH),KC_LEFT,KC_RGHT,
 	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
                                                               KC_TRNS,
 	LT(ALPH, KC_SPC),LT(ALL_T(KC_NO), KC_BSPC),KC_ESC,
@@ -146,7 +146,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	     KC_MINS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_RCBC,
 	                  KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,          KC_RCCC,
              KC_RGUI,     KC_N,   KC_M,  KC_COMM,KC_DOT,LT(SYMB,KC_SLSH),  KC_RSPC,
-                                  KC_DOWN,KC_UP, KC_BSLS,KC_GRV,           KC_RGUI,
+                                  KC_DOWN,KC_UP, KC_BSLS,KC_GRV,           KC_RCAC,
 	     KC_TRNS,     KC_TRNS, //  <- Right Hand Island START
              KC_TRNS,
              KC_TRNS,LT(MDIA, KC_DELT),LT(ALPH, KC_ENT)
@@ -205,9 +205,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
  * |         |      |      |      |      |      |      |           |      |   Up |   7  |   8  |   9  |   *  |   F12  |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |         |  #   |  -   |  "   |  :   |      |------|           |------| Down |   4  |   5  |   6  |   +  |        |
+ * |         |  #   |  :   |  "   |  -   |      |------|           |------| Down |   4  |   5  |   6  |   +  |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |         |      |  _   |  '   |  ;   |      |      |           |      |   &  |   1  |   2  |   3  |   \  |        |
+ * |         |      |  ;   |  '   |  _   |      |      |           |      |   &  |   1  |   2  |   3  |   \  |        |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   | EPRM  |      |      |      |      |                                       |      |    . |   0  |   =  |      |
  *   `-----------------------------------'                                       `----------------------------------'
@@ -224,8 +224,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        // left hand
        VRSN,   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_TRNS,
        KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
-       KC_TRNS,KC_HASH,KC_MINS, KC_DQT,KC_COLN,KC_TRNS,
-       KC_TRNS,KC_TRNS,KC_UNDS,KC_QUOT,KC_SCLN,KC_TRNS,KC_TRNS,
+       KC_TRNS,KC_HASH,KC_COLN, KC_DQT,KC_MINS,KC_TRNS,
+       KC_TRNS,KC_TRNS,KC_SCLN,KC_QUOT,KC_UNDS,KC_TRNS,KC_TRNS,
           EPRM,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
                                        RGB_MOD,KC_TRNS,
                                                KC_TRNS,
@@ -357,8 +357,8 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 static uint16_t ccs_timer[2] = {0, 0};
 // Used for bracket-cadet-shift; inserts []
 static uint16_t bcs_timer[2] = {0, 0};
-// Used for angle-bracket-cadet-shift
-//static uint16_t acs_timer[2] = {0, 0};
+// Used for angle-bracket-cadet-shift; inserts <>
+static uint16_t acs_timer[2] = {0, 0};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -446,16 +446,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     return false;
     }
-      /*case KC_LCAO: {  // LGui / <
+    case KC_LCAO: {  // LGui / <
       if (record->event.pressed) {
-        bcs_timer[0] = timer_read ();
+        acs_timer[0] = timer_read ();
         register_mods(MOD_BIT(KC_LGUI));
       }
       else {
 	unregister_mods(MOD_BIT(KC_LGUI));
         if (timer_elapsed(acs_timer[0]) < TAPPING_TERM) {
+	  register_mods(MOD_BIT(KC_LSFT));
           register_code(LCAO_KEY);
           unregister_code(LCAO_KEY);
+	  unregister_mods(MOD_BIT(KC_LSFT));
         }
       }
     return false;
@@ -468,12 +470,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       else {
 	unregister_mods(MOD_BIT(KC_RGUI));
         if (timer_elapsed(acs_timer[1]) < TAPPING_TERM) {
+	  register_mods(MOD_BIT(KC_RSFT));
           register_code(RCAC_KEY);
           unregister_code(RCAC_KEY);
+	  unregister_mods(MOD_BIT(KC_RSFT));
         }
       }
     return false;
-    }*/
+    }
   }
   return true;
 }
