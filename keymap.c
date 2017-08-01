@@ -165,7 +165,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------| LCmd |           | RCmd |------+------+------+------+------+--------|
  * |LShift/(|  Z   |   X  |   C  |   V  |   B  | /Win |           | /Win |   N  |   M  |   ,  |   .  |   /  |RShift/)|
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | LCmd |  '"  |  -   | Left | Right|                                       | Down |  Up  |   \  |   `  | RCmd |
+ *   | LCmd |  '"  |      | Left | Right|                                       | Down |  Up  |   \  |   `  | RCmd |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,---------------.
  *                                        |      |      |       |      |        |
@@ -183,7 +183,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_RCBC,        KC_Y,         KC_U,   KC_I,   KC_O,   KC_P,   KC_TRNS, // this should become shift+tab
 	KC_RCCC,        KC_H,         KC_J,   KC_K,   KC_L,   KC_SCLN,
 	KC_RSPC,        KC_N,         KC_M,   KC_COMM,KC_DOT, KC_SLSH, KC_RGUI,
-        KC_RGUI,        KC_GRV,       KC_BSLS,KC_DOWN,KC_UP,
+        KC_RGUI,        KC_TRNS, OSL(MDIA),   KC_DOWN,KC_UP,
 	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
                                                               KC_TRNS,
 	                             KC_ENT,LT(MDIA, KC_DELT),KC_TRNS,
