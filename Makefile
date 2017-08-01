@@ -4,4 +4,4 @@ COMMAND_ENABLE  = no  # Commands for debug and configuration
 TAPPING_TERM = 85  # defaults to 200 in config. 120 feels very slightly fast
 LEADER_TIMEOUT = 800
 
-TAP_DANCE_ENABLE = yes
+# TAP_DANCE_ENABLE = yes
