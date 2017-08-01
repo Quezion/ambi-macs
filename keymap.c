@@ -27,12 +27,12 @@
   #define RCBC_KEY KC_RBRACKET
 #endif
 // KC_LEFT_ANGLE_BRACKET
-#ifndef LCLT_KEY // Left Cadet Left Angle Bracket, LCmd / <
-  #define LCLT_KEY KC_LBRACKET
+#ifndef LCAO_KEY // Left Cadet Left Angle Open, LCmd / <
+  #define LCAO_KEY KC_LBRACKET
 #endif
 // KC_RIGHT_ANGLE_BRACKET
-#ifndef RCGT_KEY // Right Cadet Right Angle Bracket, RCmd / >
-  #define RCGT_KEY KC_RBRACKET
+#ifndef RCAC_KEY // Right Cadet Right Angle Close, RCmd / >
+  #define RCAC_KEY KC_RBRACKET
 #endif
 
 // MACRO DEFINITIONS
@@ -47,6 +47,8 @@ enum custom_keycodes {
   KC_RCCC,
   KC_LCBO,
   KC_RCBC,
+  //KC_LCAO,
+  //KC_RCAC,
   PLACEHOLDER = SAFE_RANGE, // can always be here
   EPRM,
   VRSN,
@@ -116,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------| LCmd |           | RCmd |------+------+------+------+------+--------|
  * |LShift/(|Z/SYMB|   X  |   C  |   V  |B/SYMB|      |           |      |   N  |   M  |   ,  |   .  |   /  |RShift/)|
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |LCmd/<|  '   |  -   | Left | Right|                                       | Down |  Up  |   \  |   `  |RCmd/>|
+ *   |LCmd/<|  '   |O_ALPH| Left | Right|                                       | Down |  Up  |   \  |   `  |RCmd/>|
  *   `----------------------------------'                                       `----------------------------------'
  * TODO: implement the LCmd/< and RCmd/>
  *                                        ,-------------.       ,---------------.
@@ -135,7 +137,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCBO,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,      LT(ALPH, KC_TAB),
         KC_LCCO,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LSPO,LT(SYMB,KC_Z),        KC_X,   KC_C,   KC_V,LT(SYMB,KC_B),KC_LGUI,
-        KC_LGUI,        KC_QUOT,      KC_MINS,KC_LEFT,KC_RGHT,
+        KC_LGUI,      KC_QUOT,   OSL(ALPH),KC_LEFT,KC_RGHT,
 	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
                                                               KC_TRNS,
 	LT(ALPH, KC_SPC),LT(ALL_T(KC_NO), KC_BSPC),KC_ESC,
@@ -355,6 +357,8 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 static uint16_t ccs_timer[2] = {0, 0};
 // Used for bracket-cadet-shift; inserts []
 static uint16_t bcs_timer[2] = {0, 0};
+// Used for angle-bracket-cadet-shift
+//static uint16_t acs_timer[2] = {0, 0};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -442,6 +446,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     return false;
     }
+      /*case KC_LCAO: {  // LGui / <
+      if (record->event.pressed) {
+        bcs_timer[0] = timer_read ();
+        register_mods(MOD_BIT(KC_LGUI));
+      }
+      else {
+	unregister_mods(MOD_BIT(KC_LGUI));
+        if (timer_elapsed(acs_timer[0]) < TAPPING_TERM) {
+          register_code(LCAO_KEY);
+          unregister_code(LCAO_KEY);
+        }
+      }
+    return false;
+    }
+    case KC_RCAC: {  // RGui / >
+      if (record->event.pressed) {
+        acs_timer[1] = timer_read ();
+        register_mods(MOD_BIT(KC_RGUI));
+      }
+      else {
+	unregister_mods(MOD_BIT(KC_RGUI));
+        if (timer_elapsed(acs_timer[1]) < TAPPING_TERM) {
+          register_code(RCAC_KEY);
+          unregister_code(RCAC_KEY);
+        }
+      }
+    return false;
+    }*/
   }
   return true;
 }
