@@ -205,7 +205,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
  * |         |      |      |      |      |      |      |           |      |   Up |   7  |   8  |   9  |   *  |   F12  |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |         |  #   |  :   |  "   |  -   |      |------|           |------| Down |   4  |   5  |   6  |   +  |        |
+ * |         |      |  :   |  "   |  -   |  #   |------|           |------| Down |   4  |   5  |   6  |   +  |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |         |      |  ;   |  '   |  _   |      |      |           |      |   &  |   1  |   2  |   3  |   \  |        |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
@@ -224,7 +224,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        // left hand
        VRSN,   KC_F1,      KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_TRNS,
        KC_TRNS,KC_TRNS,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
-       KC_TRNS,KC_HASH,  KC_COLN, KC_DQT,KC_MINS,KC_TRNS,
+       KC_TRNS,KC_TRNS,  KC_COLN, KC_DQT,KC_MINS,KC_HASH,
        KC_TRNS,KC_TRNS,  KC_SCLN,KC_QUOT,KC_UNDS,KC_TRNS,KC_TRNS,
           EPRM,KC_TRNS,OSL(ALPH),KC_TRNS,KC_TRNS,
                                        RGB_MOD,KC_TRNS,
