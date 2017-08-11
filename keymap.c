@@ -27,12 +27,20 @@
   #define RCBC_KEY KC_RBRACKET
 #endif
 // KC_LEFT_ANGLE_BRACKET
-#ifndef LCAO_KEY // Left Cadet Left Angle Open, LCmd / <
-  #define LCAO_KEY KC_COMM // note: not actual anglebrace, must be used with shift mod to get <>
-#endif
+//#ifndef LCAO_KEY // Left Cadet Left Angle Open, <
+//  #define LCAO_KEY KC_COMM // note: not actual anglebrace, must be used with shift mod to get <>
+//#endif
 // KC_RIGHT_ANGLE_BRACKET
-#ifndef RCAC_KEY // Right Cadet Right Angle Close, RCmd / >
-  #define RCAC_KEY KC_DOT
+//#ifndef RCAC_KEY // Right Cadet Right Angle Close, >
+//  #define RCAC_KEY KC_DOT
+//#endif
+// KC_LEFT_FORWARD_SLASH
+#ifndef LCFS_KEY // Left Cadet Foward Slash, LCmd / `/`
+  #define LCFS_KEY KC_SLSH
+#endif
+// KC_RIGHT_BACK_SLASH
+#ifndef RCBS_KEY // Right Cadet Back Slash, RCmd / `\`
+  #define RCBS_KEY KC_BSLS
 #endif
 
 // MACRO DEFINITIONS
@@ -51,8 +59,10 @@ enum custom_keycodes {
   KC_RCCC,
   KC_LCBO,
   KC_RCBC,
-  KC_LCAO,
-  KC_RCAC
+  KC_LCFS,
+  KC_RCBS
+  //KC_LCAO,
+  //KC_RCAC
 };
 
 //Tap Dance Declarations
@@ -96,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * | LEAD   |   1  |   2  |   3  |   4  |   5  |  -   |           |  +   |   6  |   7  |   8  |   9  |   0  |        |
+ * |   <    |   1  |   2  |   3  |   4  |   5  |  -   |           |  +   |   6  |   7  |   8  |   9  |   0  |   >    |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * | LAlt/[ |   Q  |   W  |   E  |   R  |   T  | Tab  |           |  -   |   Y  |   U  |   I  |   O  |   P  | RAlt/] |
  * |--------+------+------+------+------+------|/ALPH |           |      |------+------+------+------+------+--------|
@@ -104,7 +114,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------| LCmd |           | RCmd |------+------+------+------+------+--------|
  * |LShift/(|Z/SYMB|   X  |   C  |   V  |B/SYMB|      |           |      |   N  |   M  |   ,  |   .  |   /  |RShift/)|
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |LCmd/<|  '   |O_ALPH| Left | Right|                                       | Down |  Up  |   \  |   `  |RCmd/>|
+ *   |LCmd//| LEAD |O_ALPH| Left | Right|                                       | Down |  Up  |   \  |   `  |RCmd/\|
  *   `----------------------------------'                                       `----------------------------------'
  * TODO: implement the LCmd/< and RCmd/>
  *                                        ,-------------.       ,---------------.
@@ -119,20 +129,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Otherwise, it needs KC_*
 [BASE] = KEYMAP(  // layer 0 : default
         // Left Hand   |             |       |       |       |       |             |
-        KC_LEAD,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,      KC_MINS,
+          KC_LT,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,      KC_MINS,
         KC_LCBO,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,      LT(ALPH, KC_TAB),
         KC_LCCO,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LSPO,LT(SYMB,KC_Z),        KC_X,   KC_C,   KC_V,LT(SYMB,KC_B),KC_LGUI,
-        KC_LCAO,      KC_QUOT,   OSL(ALPH),KC_LEFT,KC_RGHT,
+        KC_LCFS,      KC_QUOT,   OSL(ALPH),KC_LEFT,KC_RGHT,
 	/*         Left Hand Island START ->       */ KC_TRNS,KC_TRNS,
                                                               KC_TRNS,
 	LT(ALPH, KC_SPC),LT(ALL_T(KC_NO), KC_BSPC),KC_ESC,
         // Right Hand    |       |      |       |       |                 |
-	     KC_PLUS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,        ALL_T(KC_NO),
+	     KC_PLUS,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_GT,
 	     KC_MINS,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_RCBC,
 	                  KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,          KC_RCCC,
              KC_RGUI,     KC_N,   KC_M,  KC_COMM,KC_DOT,LT(SYMB,KC_SLSH),  KC_RSPC,
-                                  KC_DOWN,KC_UP, KC_BSLS,KC_GRV,           KC_RCAC,
+                                  KC_DOWN,KC_UP, KC_BSLS,KC_GRV,           KC_RCBS,
 	     KC_TRNS,     KC_TRNS, //  <- Right Hand Island START
              KC_TRNS,
              KC_TRNS,LT(MDIA, KC_DELT),LT(ALPH, KC_ENT)
@@ -195,7 +205,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |         |      |  ;   |  '   |  _   |      |      |           |      |   &  |   1  |   2  |   3  |   \  |        |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | EPRM  |      |O_ALPH|  /   |  \   |                                       |      |    . |   0  |   =  |      |
+ *   | EPRM  |      |O_ALPH|  \   |  /   |                                       |      |    . |   0  |   =  |      |
  *   `-----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        |Animat|      |       |Toggle|Solid |
@@ -212,7 +222,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_TRNS,KC_TRNS,  KC_PIPE,KC_HASH, KC_EQL,KC_TILD,KC_TRNS,
        KC_TRNS,KC_TRNS,  KC_COLN, KC_DQT,KC_MINS,KC_QUOT,
        KC_TRNS,KC_TRNS,  KC_SCLN,KC_QUOT,KC_UNDS,KC_TRNS,KC_TRNS,
-          EPRM,KC_TRNS,OSL(ALPH),KC_SLSH,KC_BSLS,
+          EPRM,KC_TRNS,OSL(ALPH),KC_BSLS,KC_SLSH,
                                        RGB_MOD,KC_TRNS,
                                                KC_TRNS,
                                KC_TRNS,KC_TRNS,KC_TRNS,
@@ -231,7 +241,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * |        |      |      |      | Mute |      |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |      |      |      |VolUp |      |      |           |      | Rclk | MsUp | Lclk |      |      |        |
+ * |        |      |      |      |VolUp |      |      |           |      | Lclk | MsUp | Rclk |      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |      |      | Prev | Play | Next |------|           |------|MsLeft|MsDown|MsRigt|      |      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -258,8 +268,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                     KC_TRNS,
                                   KC_TRNS, KC_TRNS, KC_TRNS,
     // right hand
-       KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-       KC_TRNS,  KC_BTN2, KC_MS_U, KC_BTN1, KC_TRNS, KC_TRNS, KC_TRNS,
+       KC_TRNS,  KC_TRNS, KC_BTN3, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+       KC_TRNS,  KC_BTN1, KC_MS_U, KC_BTN2, KC_TRNS, KC_TRNS, KC_TRNS,
                  KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS, KC_TRNS, KC_TRNS,
        KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -343,8 +353,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 static uint16_t ccs_timer[2] = {0, 0};
 // Used for bracket-cadet-shift; inserts []
 static uint16_t bcs_timer[2] = {0, 0};
+// Used for angle-bracket-cadet-shift; inserts / `\`
+static uint16_t scs_timer[2] = {0, 0};
 // Used for angle-bracket-cadet-shift; inserts <>
-static uint16_t acs_timer[2] = {0, 0};
+//static uint16_t acs_timer[2] = {0, 0};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -432,34 +444,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     return false;
     }
-    case KC_LCAO: {  // LGui / <
+    case KC_LCFS: {  // LGui `/`
       if (record->event.pressed) {
-        acs_timer[0] = timer_read ();
+        scs_timer[0] = timer_read ();
         register_mods(MOD_BIT(KC_LGUI));
       }
       else {
 	unregister_mods(MOD_BIT(KC_LGUI));
-        if (timer_elapsed(acs_timer[0]) < TAPPING_TERM) {
-	  register_mods(MOD_BIT(KC_LSFT));
-          register_code(LCAO_KEY);
-          unregister_code(LCAO_KEY);
-	  unregister_mods(MOD_BIT(KC_LSFT));
+        if (timer_elapsed(scs_timer[0]) < TAPPING_TERM) {	 
+          register_code(LCFS_KEY);
+          unregister_code(LCFS_KEY);	  
         }
       }
     return false;
     }
-    case KC_RCAC: {  // RGui / >
+    case KC_RCBS: {  // RGui `\`
       if (record->event.pressed) {
-        acs_timer[1] = timer_read ();
+        scs_timer[1] = timer_read ();
         register_mods(MOD_BIT(KC_RGUI));
       }
       else {
 	unregister_mods(MOD_BIT(KC_RGUI));
-        if (timer_elapsed(acs_timer[1]) < TAPPING_TERM) {
-	  register_mods(MOD_BIT(KC_RSFT));
-          register_code(RCAC_KEY);
-          unregister_code(RCAC_KEY);
-	  unregister_mods(MOD_BIT(KC_RSFT));
+        if (timer_elapsed(scs_timer[1]) < TAPPING_TERM) {	
+          register_code(RCBS_KEY);
+          unregister_code(RCBS_KEY);	 
         }
       }
     return false;
