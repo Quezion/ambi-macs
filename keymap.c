@@ -106,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * |   <    |   1  |   2  |   3  |   4  |   5  |  -   |           |  +   |   6  |   7  |   8  |   9  |   0  |   >    |
+ * |   <    |   1  |   2  |   3  |   4  |   5  | LEAD |           |  +   |   6  |   7  |   8  |   9  |   0  |   >    |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * | LAlt/[ |   Q  |   W  |   E  |   R  |   T  | Tab  |           |  -   |   Y  |   U  |   I  |   O  |   P  | RAlt/] |
  * |--------+------+------+------+------+------|/ALPH |           |      |------+------+------+------+------+--------|
@@ -129,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Otherwise, it needs KC_*
 [BASE] = KEYMAP(  // layer 0 : default
         // Left Hand   |             |       |       |       |       |             |
-          KC_LT,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,      KC_MINS,
+          KC_LT,        KC_1,         KC_2,   KC_3,   KC_4,   KC_5,      KC_LEAD,
         KC_LCBO,        KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,      LT(ALPH, KC_TAB),
         KC_LCCO,        KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LSPO,LT(SYMB,KC_Z),        KC_X,   KC_C,   KC_V,LT(SYMB,KC_B),KC_LGUI,
