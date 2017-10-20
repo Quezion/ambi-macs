@@ -8,6 +8,8 @@ There's also a media layer with playback controls, volume up/down, and keyboard 
 
 I use this layout every day, and while it's significantly more powerful than other offerings (WRT Clojure development), it may be difficult to learn. As of 2017/10/19, no other developer has tried.
 
-I'm willing to assist others in learning, understanding, or extending this layout. Contact me if you're interested, as it's likely that I'm still happily clacking away.
+I'm willing to assist others in learning, understanding, or extending this layout. Contact me if you're interested.
+
+In the meantime, I'll keep happily clacking along.
 
 - Q
